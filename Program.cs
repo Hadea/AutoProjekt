@@ -32,7 +32,7 @@ namespace AutoProjekt
             meinAuto.TuerenBenutzen(AutoTuer.VornLinks);
             meinAuto.TuerenAusgeben();
 
-            Auto ferr2 = new Auto((byte)(AutoTuer.HintenLinks| AutoTuer.HintenRechts | AutoTuer.TankDeckel));
+            Auto MeinZweitwagen = new Auto((byte)(AutoTuer.HintenLinks | AutoTuer.HintenRechts | AutoTuer.TankDeckel));
 
         }
 
@@ -86,7 +86,7 @@ namespace AutoProjekt
             if ((_aktivierbareTueren & (byte)Tuer) == 0) //early exit wenn nicht erlaubte tür benutzt wird
             {
                 Console.WriteLine("Tür ist verboten");
-                return;
+                return; // beendet vorzeitig die methode
             }
 
             if ((_tueren & (byte)Tuer) > 0)
@@ -109,11 +109,11 @@ namespace AutoProjekt
 
         public void TuerenAusgeben()
         {
-            byte Lesekopf = 0b_0000_0001;
+            byte Lesekopf = 0b_1000_0000;
             for (int i = 0; i < 8; i++) //Hack: geht fest von 8 möglichen türen aus
             {
                 Console.Write(((_tueren & Lesekopf) > 0 ? "  true" : " false"));
-                Lesekopf = (byte)(Lesekopf << 1);
+                Lesekopf = (byte)(Lesekopf >> 1);
             }
             Console.WriteLine();
         }
@@ -121,7 +121,7 @@ namespace AutoProjekt
 
     class Ferrari : Auto
     {
-        public Ferrari(byte erlaubteTueren) : base (erlaubteTueren) { }
+        public Ferrari(byte erlaubteTueren) : base(erlaubteTueren) { }
 
         public Ferrari()
         {
@@ -139,13 +139,13 @@ namespace AutoProjekt
 
     enum AutoTuer
     {
-        VornLinks = 0b_0000_0001,
-        VornRechts = 0b_0000_0010,
-        HintenLinks = 0b_0000_0100,
-        HintenRechts = 0b_0000_1000,
-        KofferRaum = 0b_0001_0000,
-        MotorHaube = 0b_0010_0000,
-        SchiebeDach = 0b_0100_0000,
-        TankDeckel = 0b_1000_0000
+        VornLinks = 0b_0000_0001, // 1   0x01
+        VornRechts = 0b_0000_0010, // 2
+        HintenLinks = 0b_0000_0100, // 4
+        HintenRechts = 0b_0000_1000, // 8
+        KofferRaum = 0b_0001_0000, // 16
+        MotorHaube = 0b_0010_0000, // 32
+        SchiebeDach = 0b_0100_0000, //64
+        TankDeckel = 0b_1000_0000 //128
     }
 }
